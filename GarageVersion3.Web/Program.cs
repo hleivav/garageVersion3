@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using GarageVersion3.Web.Data;
+using GarageVersion3.Data; 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GarageVersion3Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GarageVersion3Context") ?? throw new InvalidOperationException("Connection string 'GarageVersion3Context' not found.")));
@@ -9,6 +11,27 @@ builder.Services.AddDbContext<GarageVersion3Context>(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using(var scope = app.Services.CreateScope())
+{
+    
+    var db = scope.ServiceProvider.GetRequiredService<GarageVersion3Context>();
+
+    //db.Database.EnsureDeleted(); //avmarkera när man inte behöver befolka db:n
+    //db.Database.Migrate();
+
+    try
+    {
+        await SeedData.InitAsync(db);
+    }
+    catch (Exception e){
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(string.Join(" ", e.Message));
+    }
+}
+
+//SeedData
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

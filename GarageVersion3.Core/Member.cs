@@ -4,7 +4,7 @@ namespace GarageVersion3.Core
 {
     public class Member
     {
-        public Member()
+        private Member()
         {
             PersNrId = null!;
             FirstName = null!;

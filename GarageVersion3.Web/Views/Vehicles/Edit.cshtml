@@ -13,11 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="RegNrId" />
-            <div class="form-group">
-                <label asp-for="ParkingNr" class="control-label"></label>
-                <input asp-for="ParkingNr" class="form-control" />
-                <span asp-validation-for="ParkingNr" class="text-danger"></span>
-            </div>
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="InGarage" /> @Html.DisplayNameFor(model => model.InGarage)
@@ -38,11 +34,7 @@
                 <select asp-for="VehicleTypeId" class="form-control" asp-items="ViewBag.VehicleTypeId"></select>
                 <span asp-validation-for="VehicleTypeId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ParkingId" class="control-label"></label>
-                <input asp-for="ParkingId" class="form-control" />
-                <span asp-validation-for="ParkingId" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
