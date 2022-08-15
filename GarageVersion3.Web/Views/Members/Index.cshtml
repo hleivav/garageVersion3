@@ -1,10 +1,16 @@
-﻿@model IEnumerable<GarageVersion3.Core.Member>
+﻿@using GarageVersion3.Web.Models
+@model IEnumerable<MemberIndexViewModel>
+
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
+
+
+@*Ta reda på var får variabeln NrOfVehicles sitt värde
+*@
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,10 +19,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.PersNrId) 
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName) 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrOfVehicles)
             </th>
             <th></th>
         </tr>
@@ -25,10 +37,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.PersNrId)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrOfVehicles)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PersNrId">Edit</a> |

@@ -49,8 +49,8 @@ namespace GarageVersion3.Web.Controllers
         // GET: Vehicles/Create
         public IActionResult Create()
         {
-            ViewData["MemberId"] = new SelectList(_context.Member, "PersNrId", "PersNrId");
-            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id");
+            ViewData["MemberId"] = new SelectList(_context.Member, "PersNrId", "FullName");
+            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "KindOfVehicle");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace GarageVersion3.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RegNrId,ParkingNr,InGarage,StartingAt,MemberId,VehicleTypeId,ParkingId")] Vehicle vehicle)
+        public async Task<IActionResult> Create(Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -67,8 +67,8 @@ namespace GarageVersion3.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MemberId"] = new SelectList(_context.Member, "PersNrId", "PersNrId", vehicle.MemberId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id", vehicle.VehicleTypeId);
+            ViewData["MemberId"] = new SelectList(_context.Member, "PersNrId", "FullName", vehicle.MemberId);
+            ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "KindOfVehicle", vehicle.VehicleTypeId);
             return View(vehicle);
         }
 

@@ -7,24 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GarageVersion3.Core;
 using GarageVersion3.Web.Data;
+using AutoMapper;
+using GarageVersion3.Web.Models;
 
 namespace GarageVersion3.Web.Controllers
 {
     public class MembersController : Controller
     {
         private readonly GarageVersion3Context _context;
+        private readonly IMapper mapper;
 
-        public MembersController(GarageVersion3Context context)
+        public MembersController(GarageVersion3Context context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper; 
         }
 
         // GET: Members
         public async Task<IActionResult> Index()
         {
-              return _context.Member != null ? 
-                          View(await _context.Member.ToListAsync()) :
-                          Problem("Entity set 'GarageVersion3Context.Member'  is null.");
+            //return _context.Member != null ? 
+            //            View(await _context.Member.ToListAsync()) :
+            //            Problem("Entity set 'GarageVersion3Context.Member'  is null.");
+
+            var ViewModel = await mapper.ProjectTo<MemberIndexViewModel>(_context.Member).ToListAsync();
+            return View(ViewModel); 
         }
 
         // GET: Members/Details/5
@@ -35,8 +42,12 @@ namespace GarageVersion3.Web.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.PersNrId == id);
+            //var member = await _context.Member
+            //    .FirstOrDefaultAsync(m => m.PersNrId == id);
+
+            var member = await mapper.ProjectTo<MemberDetailsViewModel>(_context.Member)
+                .FirstOrDefaultAsync(s => s.PersNrId == id); 
+
             if (member == null)
             {
                 return NotFound();
@@ -56,15 +67,19 @@ namespace GarageVersion3.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersNrId,FirstName,LastName")] Member member)
+        public async Task<IActionResult> Create(MemberCreateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var member = mapper.Map<Member>(viewModel);
+
                 _context.Add(member);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
+
             }
-            return View(member);
+            return View(viewModel);
         }
 
         // GET: Members/Edit/5
@@ -75,7 +90,9 @@ namespace GarageVersion3.Web.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member.FindAsync(id);
+            //var member = await _context.Member.FindAsync(id);
+            var member = await mapper.ProjectTo<MemberEditViewModel>(_context.Member)
+                .FirstOrDefaultAsync(s => s.PersNrId == id);
             if (member == null)
             {
                 return NotFound();
@@ -88,9 +105,9 @@ namespace GarageVersion3.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("PersNrId,FirstName,LastName")] Member member)
+        public async Task<IActionResult> Edit(string id, MemberEditViewModel viewModel)
         {
-            if (id != member.PersNrId)
+            if (id != viewModel.PersNrId)
             {
                 return NotFound();
             }
@@ -99,12 +116,17 @@ namespace GarageVersion3.Web.Controllers
             {
                 try
                 {
+                    var member = await _context.Member.Include(s => s.Vehicles)
+                        .FirstOrDefaultAsync(S => S.PersNrId == id);
+
+                    mapper.Map(viewModel, member);
+
                     _context.Update(member);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MemberExists(member.PersNrId))
+                    if (!MemberExists(viewModel.PersNrId))
                     {
                         return NotFound();
                     }
@@ -115,7 +137,7 @@ namespace GarageVersion3.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+            return View(viewModel);
         }
 
         // GET: Members/Delete/5

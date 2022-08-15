@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using GarageVersion3.Web.Data;
-using GarageVersion3.Data; 
+using GarageVersion3.Data;
+using GarageVersion3.Web.Automapper;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GarageVersion3Context>(options =>
@@ -9,6 +10,7 @@ builder.Services.AddDbContext<GarageVersion3Context>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 var app = builder.Build();
 
@@ -50,6 +52,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Members}/{action=Index}/{id?}");
 
 app.Run();

@@ -7,14 +7,14 @@ namespace GarageVersion3.Core
     {
         private Vehicle()
         {
-            RegNrId = null!; 
+            RegNrId = null!;
         }
 
         public Vehicle(string regNrId, bool inGarage, DateTime startingAt)
         {
             RegNrId = regNrId;
-            InGarage = inGarage;    
-            StartingAt = startingAt;    
+            InGarage = inGarage;
+            StartingAt = startingAt;
         }
         [Key]
         public string RegNrId  { get; set; }
@@ -27,8 +27,8 @@ namespace GarageVersion3.Core
         public int? ParkingSpotId { get; set; }
 
         //Navigation Property
-        public Member Member { get; set; }
-        public VehicleType VehicleType { get; set; }
-        public ParkingSpot ParkingSpot { get; set; }
+        public Member Member { get; set; } = default!;
+        public VehicleType? VehicleType { get; set; } = default!;
+        public ParkingSpot? ParkingSpot { get; set; } = default!;
     }
 }
