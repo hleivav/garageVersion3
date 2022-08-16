@@ -23,6 +23,22 @@ namespace GarageVersion3.Web.Controllers
             this.mapper = mapper; 
         }
 
+        public async Task<IActionResult> Filter(string MemberId)
+        {
+            var model = string.IsNullOrEmpty(MemberId) ?
+                _context.Member :
+                _context.Member.Where(m => m.PersNrId!.StartsWith(MemberId));
+
+            //model = VehicleType == null ?
+            //    model :
+            //    model.Where(m => m.FullName == VehicleType);
+
+            var viewModel = mapper.Map<IEnumerable<MemberIndexViewModel>>(model);
+
+            return View(nameof(Index), viewModel.ToList());
+
+        }
+
         // GET: Members
         public async Task<IActionResult> Index()
         {
@@ -76,8 +92,6 @@ namespace GarageVersion3.Web.Controllers
                 _context.Add(member);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-
-
             }
             return View(viewModel);
         }

@@ -1,10 +1,22 @@
-﻿@model IEnumerable<GarageVersion3.Core.Vehicle>
+﻿@using GarageVersion3.Web.Models
+@model IEnumerable<VehicleIndexViewModel>
+
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Index - Vehicles</h1>
+
+<form asp-action="Filter" asp-controller="Vehicles" method="get"> @*Filter är namnet på funktionen i controlern.Members är namnet på controllern där funktionen finns och get är metoden som anväds då vi ska få data.*@
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="RegNrId" placeholder="Sök ett fordon med registreringsnumret..."/> @*Det här är en input fält där det viktiga är name som binder datan som ska skickas till funktionen filte*@
+
+        <div class="input-group-append">
+            <button type="submit"class="btn btn-primary"><i class="fa fa-search">Sök</i></button> @*sökknappen*@
+        </div>
+    </div>
+</form>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,7 +24,9 @@
 <table class="table">
     <thead>
         <tr>
-
+            <th>
+                @Html.DisplayNameFor(model => model.RegNrId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.InGarage)
             </th>
@@ -21,10 +35,13 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Member)
+                @Html.DisplayNameFor(model => model.MemberName)
+            </th>
+                        <th>
+                @Html.DisplayNameFor(model => model.MemberId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.VehicleType)
+                @Html.DisplayNameFor(model => model.VehicleTypeName)
             </th>
             <th></th>
         </tr>
@@ -32,7 +49,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.RegNrId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.InGarage)
             </td>
@@ -41,13 +60,16 @@
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.Member.PersNrId)
+                @Html.DisplayFor(modelItem => item.MemberName)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.MemberId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VehicleType.Id)
+                @Html.DisplayFor(modelItem => item.VehicleTypeName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RegNrId">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.RegNrId">Park/Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.RegNrId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.RegNrId">Delete</a>
             </td>

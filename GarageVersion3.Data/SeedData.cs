@@ -19,7 +19,7 @@ public class SeedData
         var vehicleTypes = GenerateVehicleTypes();
         await db.AddRangeAsync(vehicleTypes);
 
-        var members = GenerateMembers(10, vehicleTypes);
+        var members = GenerateMembers(20, vehicleTypes);
         await db.AddRangeAsync(members);
 
 

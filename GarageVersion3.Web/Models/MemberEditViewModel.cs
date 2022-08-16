@@ -9,9 +9,9 @@ namespace GarageVersion3.Web.Models
         public string PersNrId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string FullName => $"{FirstName} {LastName}";
+        //public string FullName => $"{FirstName} {LastName}";
 
         //Navigation properties
-        public ICollection<Vehicle> Vehicles { get; set; }/* = new List<Vehicle>();*/
+        //public ICollection<Vehicle> Vehicles { get; set; }/* = new List<Vehicle>();*/
     }
 }

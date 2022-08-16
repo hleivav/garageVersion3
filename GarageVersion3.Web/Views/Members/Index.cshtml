@@ -6,11 +6,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Index - Medlemmar</h1>
 
+<form asp-action="Filter" asp-controller="Members" method="get"> @*Filter är namnet på funktionen i controlern.Members är namnet på controllern där funktionen finns och get är metoden som anväds då vi ska få data.*@
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="MemberId" placeholder="Sök en medlem med personnumret..."/> @*Det här är en input fält där det viktiga är name som binder datan som ska skickas till funktionen filte*@
 
-@*Ta reda på var får variabeln NrOfVehicles sitt värde
-*@
+        <div class="input-group-append">
+            <button type="submit"class="btn btn-primary"><i class="fa fa-search">Sök</i></button> @*sökknappen*@
+        </div>
+    </div>
+</form>
+
 
 <p>
     <a asp-action="Create">Create New</a>

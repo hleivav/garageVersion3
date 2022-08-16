@@ -1,4 +1,5 @@
 ﻿using GarageVersion3.Core;
+using GarageVersion3.Web.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace GarageVersion3.Web.Models
@@ -7,6 +8,7 @@ namespace GarageVersion3.Web.Models
     public class MemberCreateViewModel
     {
         [Key]
+        //[ToYoungToDrive (ErrorMessage = "You are to young to drive a car.")]
         public string PersNrId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
